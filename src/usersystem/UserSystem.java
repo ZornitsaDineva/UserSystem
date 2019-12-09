@@ -7,9 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.Date;
+import org.apache.log4j.Logger;
 
 public class UserSystem {
-    
+    protected static final Logger log = Logger.getLogger(UserSystem.class);
     private Connection conn;
 
     public UserSystem() {
@@ -18,6 +19,7 @@ public class UserSystem {
     public void connectToDB() throws SQLException {
         String dbURL = "jdbc:sqlite:UserSystem.db";
         conn = DriverManager.getConnection(dbURL);
+        log.info("db connected");
     }
     
     public void createTableUser() throws SQLException {
@@ -33,7 +35,7 @@ public class UserSystem {
         Statement statement = conn.createStatement();
         int rowsAffected = statement.executeUpdate(createUserTableSql);
         if (rowsAffected > 0) {
-            System.out.println("A table created!");
+            log.info("A table created!");
         }
     }
     
@@ -45,7 +47,7 @@ public class UserSystem {
         Statement statement = conn.createStatement();
         int rowsAffected = statement.executeUpdate(createUserTableSql);
         if (rowsAffected > 0) {
-            System.out.println("A table created!");
+            log.info("A table created!");
         }
     }
     
@@ -63,7 +65,7 @@ public class UserSystem {
 
         int rowsAffected = pStatement.executeUpdate();
         if (rowsAffected > 0) {
-            System.out.println("A new user was inserted successfully!");
+            log.info("A new user was inserted successfully!");
         }
     }
     
@@ -81,7 +83,7 @@ public class UserSystem {
 
         int rowsAffected = pStatement.executeUpdate();
         if (rowsAffected > 0) {
-            System.out.println("A new user was inserted successfully!");
+            log.info("A new user was inserted successfully!");
         }
     }
     
@@ -90,6 +92,7 @@ public class UserSystem {
         Statement statement = conn.createStatement();
         ResultSet result = statement.executeQuery(selectSql);
         int count = 0;
+        System.out.println("all users:");
         while (result.next()){
             String firstName = result.getString("firstName");
             String lastName = result.getString("lastName");
@@ -118,7 +121,7 @@ public class UserSystem {
             System.out.println(String.format(output, id, firstName, lastName, egn));
             cleanupFailedLogins(username);
         } else {
-            System.out.println("Invalid login");
+            log.info("Invalid login");
             registerFailedLogin(username);            
         }
     }  
@@ -132,7 +135,7 @@ public class UserSystem {
 
         int rowsAffected = pStatement.executeUpdate();
         if (rowsAffected > 0) {
-            System.out.println("A new odit entry inserted successfully!");
+            log.info("A new odit entry inserted successfully!");
         }
     }
     
@@ -144,7 +147,7 @@ public class UserSystem {
 
         int rowsAffected = pStatement.executeUpdate();
         if (rowsAffected > 0) {
-            System.out.println(rowsAffected + " rows deleted from odit table");
+            log.info(rowsAffected + " rows deleted from odit table");
         }
     }
     
@@ -165,10 +168,9 @@ public class UserSystem {
         
         return false;
     }
-    
-
 
     void close() throws SQLException {
         conn.close();
+        log.info("db connection closed");
     }
 }
