@@ -10,10 +10,6 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author HP-OMEN 17-AN014NU
- */
 public class App {
     public static void main(String[] args) {
         UserSystem userSystem = new UserSystem();
